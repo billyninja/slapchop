@@ -8,6 +8,13 @@
 
 Post images to this services, and it will slice and dice it into serveral image tiles.
 
+
+## Options/Flags
+
+- -port Port number for the process **default:** "3001"
+- -upload_dir Base path for the user uploaded files/slapchops **default:** "/tmp/slapchop"
+- -v Verbose Mode **default:** false
+
 ----
 ## Requirements for dev and building
 `go get github.com/julienschmidt/httprouter`
