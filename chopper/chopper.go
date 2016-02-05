@@ -3,9 +3,9 @@ package chopper
 import(
 	"image"
 	"image/jpeg"
+	"image/png"
 	"image/draw"
 	"mime/multipart"
-	//"image/png"
 	"log"
 	"fmt"
 	"os"
@@ -32,8 +32,14 @@ func Load(file multipart.File) (*image.Image, string, error) {
 func (t *Tile) Save() {
 	toimg, _ := os.Create(t.filename)
     defer toimg.Close()
-    // TODO: Switch t.format
-   	jpeg.Encode(toimg, t.image, &jpeg.Options{jpeg.DefaultQuality})
+
+   	switch {
+    case t.format == "jpeg":
+   		jpeg.Encode(toimg, t.image, &jpeg.Options{jpeg.DefaultQuality})
+    case t.format == "png":
+        png.Encode(toimg, t.image)
+    }
+
 }
 
 func SaveAll(tiles []*Tile) {
@@ -42,7 +48,7 @@ func SaveAll(tiles []*Tile) {
 	}
 }
 
-func Slice(original image.Image, tileSize int, format string) []*Tile {
+func Slice(original image.Image, tileSize int, format string, path string) []*Tile {
 
 	// Getting original dimensions, that we can decide how to slice it
     bounds := original.Bounds()
@@ -67,15 +73,15 @@ func Slice(original image.Image, tileSize int, format string) []*Tile {
 			// Setting the cropped area
     		cropR := image.Rect(rxi, ryi, rxj, ryj)
     		cropR = original.Bounds().Intersect(cropR)
-    		log.Println(cropR.Min.X, cropR.Min.Y, cropR.Max.X, cropR.Max.Y)
 
     		// Initializing an empty RGBA tile
     		subImg := image.NewRGBA(image.Rect(0, 0, tileSize, tileSize))
     		// Filling the new img with the source area
     		draw.Draw(subImg, subImg.Bounds(), original, cropR.Min, draw.Src)
     		
+            os.MkdirAll(path, 0777)
     		tiles[idx] = &Tile{
-    			filename: fmt.Sprintf("upload/%d_%d.jpg", y, x),
+    			filename: fmt.Sprintf("%s/%d_%d.jpg", path, y, x),
     			image: subImg,
     			format: format,
     		}

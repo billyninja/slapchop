@@ -14,8 +14,8 @@ func main() {
 
 	router := httprouter.New()
 
-	router.POST("/chopit", actions.Create)
-	router.GET("/chopit/:chopid", actions.Read)
+	router.POST("/chopit/:username", actions.Create)
+	router.GET("/chopit/:username/:chopid", actions.Read)
 	
 	/*	TODO
 
