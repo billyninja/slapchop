@@ -1,6 +1,7 @@
 # SLAPCHOP
+---
 
-![Slapchop video!](http://img.youtube.com/vi/rUbWjIKxrrs/0.jpg)](http://www.youtube.com/watch?v=rUbWjIKxrrs)
+[![Slapchop video!](http://img.youtube.com/vi/rUbWjIKxrrs/0.jpg)](http://www.youtube.com/watch?v=rUbWjIKxrrs)
 
 ----
 ## Basic Idea
