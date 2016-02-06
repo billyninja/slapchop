@@ -2,7 +2,7 @@ package puzzler
 
 import (
 	"github.com/go-resty/resty"
-	"github.com/slapchop/actions"
+	"github.com/billyninja/slapchop/actions"
 )
 
 
@@ -11,6 +11,8 @@ func CreatePuzzle(actions.CreateResponse) {
     	SetHeader("Content-Type", "application/json").
     	SetBody(`{"username":"testuser", "password":"testpass"}`).
       	Post("http://localhost:8000")
+
+  	println(resp, err)
 
 	return
 }
