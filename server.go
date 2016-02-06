@@ -1,11 +1,11 @@
 package main
 
 import (
-	"log"
 	"flag"
-	"net/http"
-	"github.com/julienschmidt/httprouter"
 	"github.com/billyninja/slapchop/actions"
+	"github.com/julienschmidt/httprouter"
+	"log"
+	"net/http"
 )
 
 var PortNumber = *flag.String("port", "3001", "HTTP port number")
@@ -20,10 +20,10 @@ func main() {
 	router.DELETE("/chopit/:username/:chopid", actions.Delete)
 
 	/*	TODO
-	router.GET("/random/:chopid", actions.Random)
+		router.GET("/random/:chopid", actions.Random)
 	*/
 
-	err := http.ListenAndServe(":" + PortNumber, router)
+	err := http.ListenAndServe(":"+PortNumber, router)
 	if err != nil {
 		log.Fatal(err)
 	}
