@@ -20,3 +20,10 @@ type ReadAllResponse struct {
 	User string
 	Slapchops []*SlapchopEntry
 }
+
+type CreateResponse struct {
+	User string
+	ChopId string
+	Href string
+	Tiles []*TileEntry	
+}

@@ -18,6 +18,7 @@ Post images to this services, and it will slice and dice it into serveral image 
 ----
 ## Requirements for dev and building
 `go get github.com/julienschmidt/httprouter`
+`go get github.com/go-resty/resty
 
 ----
 ## Requirements for production
