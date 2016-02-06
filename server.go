@@ -15,11 +15,11 @@ func main() {
 	router := httprouter.New()
 
 	router.POST("/chopit/:username", actions.Create)
-	router.GET("/chopit/:username/:chopid", actions.Read)
 	router.GET("/chopit/:username", actions.ReadAll)
+	router.GET("/chopit/:username/:chopid", actions.Read)
+	router.DELETE("/chopit/:username/:chopid", actions.Delete)
 
 	/*	TODO
-	router.DELETE("/chopit/:username/:chopid", actions.Delete)
 	router.GET("/random/:chopid", actions.Random)
 	*/
 

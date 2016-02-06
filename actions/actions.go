@@ -1,12 +1,15 @@
 package actions
 
 import (
+    "os"
 	"log"
 	"fmt"
 	"time"
 	"net/http"
     "io/ioutil"
+    "encoding/json"
     "slapchop/chopper"
+
 	
 	// 3rd party
 	"github.com/julienschmidt/httprouter"
@@ -50,6 +53,9 @@ func ReadAll(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
     username := ps.ByName("username")
     log.Printf("Requesting all slapchops for %s", username)
 
+    path := fmt.Sprintf("%s/%s/%s", BasePath, username)
+    println(path)
+
     w.WriteHeader(http.StatusOK)
 	w.Write([]byte(""))
 }
@@ -61,13 +67,40 @@ func Read(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
     chopid := ps.ByName("chopid")
     log.Printf("Requesting %s slapchop, from %s", chopid, username)
 
-    path = fmt.Sprintf("%s/%s/%s", BasePath, username, chopid)
-
+    path := fmt.Sprintf("%s/%s/%s", BasePath, username, chopid)
     files, _ := ioutil.ReadDir(path)
+    var tiles []*TileEntry
     for _, f := range files {
-            fmt.Println(f.Name())
+        fname := f.Name()
+        tiles = append(tiles, &TileEntry{
+            Filename: fname,
+            Href: fmt.Sprintf("%s/%s", path, fname),
+        })
+    }
+
+    resp := ReadResponse{
+        User: username,
+        Id: chopid,
+        Tiles: tiles,
     }
 
     w.WriteHeader(http.StatusOK)
-    w.Write([]byte(""))
+    json_resp, _ := json.Marshal(&resp)
+    w.Write(json_resp)
+}
+
+
+func Delete(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+    username := ps.ByName("username")
+    chopid := ps.ByName("chopid")
+    log.Printf("Deleting %s slapchop, from %s", chopid, username)
+
+    path := fmt.Sprintf("%s/%s/%s", BasePath, username, chopid)
+    err := os.RemoveAll(path) 
+    if err != nil {
+        return
+    }
+
+    w.WriteHeader(http.StatusOK)
+    w.Write([]byte(`ok!`))
 }
