@@ -1,12 +1,12 @@
 package puzzler
 
 import (
-	"net/http"
+	/*"net/http"
+	"github.com/go-resty/resty"*/
 	"slapchop/actions"
-	"github.com/bndr/gopencils"
 )
 
 
 func CreatePuzzle(actions.CreateResponse) {
-	puzzler := gopencils.Api("http://localhost:8000")
+	return
 }

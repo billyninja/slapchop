@@ -3,6 +3,7 @@ language: go
 install:
   - go get github.com/julienschmidt/httprouter
   - go get github.com/go-resty/resty
+  - go get .
 
 # script:
 #   - go test -v .
