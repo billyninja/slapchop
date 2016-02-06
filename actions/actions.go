@@ -8,7 +8,7 @@ import (
 	"net/http"
     "io/ioutil"
     "encoding/json"
-    "slapchop/chopper"
+    "github.com/billyninja/slapchop/chopper"
 
 	
 	// 3rd party

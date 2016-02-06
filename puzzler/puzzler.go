@@ -3,7 +3,7 @@ package puzzler
 import (
 	/*"net/http"
 	"github.com/go-resty/resty"*/
-	"slapchop/actions"
+	"github.com/slapchop/actions"
 )
 
 

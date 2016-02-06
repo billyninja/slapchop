@@ -5,7 +5,7 @@ import (
 	"flag"
 	"net/http"
 	"github.com/julienschmidt/httprouter"
-	"slapchop/actions"
+	"github.com/billyninja/slapchop/actions"
 )
 
 var PortNumber = *flag.String("port", "3001", "HTTP port number")
