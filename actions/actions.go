@@ -5,7 +5,8 @@ import (
 	"fmt"
 	"time"
 	"net/http"
-	"slapchop/chopper"
+    "io/ioutil"
+    "slapchop/chopper"
 	
 	// 3rd party
 	"github.com/julienschmidt/httprouter"
@@ -15,6 +16,7 @@ import (
 var MaxFileSize = int64(1024 * 1024 * 5) // MB
 var TileSize = 64 // pixels
 var BasePath = "upload"
+
 
 /* Let's use here the CRUD standard names */
 func Create(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
@@ -37,15 +39,35 @@ func Create(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
     tiles := chopper.Slice(*img, TileSize, format, path)
     chopper.SaveAll(tiles)
 
-    w.WriteHeader(http.StatusOK)
-
     // TODO write proper JSON output
+    w.WriteHeader(http.StatusOK)
+    w.Write([]byte(""))
+}
+
+
+func ReadAll(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+
+    username := ps.ByName("username")
+    log.Printf("Requesting all slapchops for %s", username)
+
+    w.WriteHeader(http.StatusOK)
 	w.Write([]byte(""))
 }
 
+
 func Read(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-    log.Printf("Requesting slapchop")
+
     username := ps.ByName("username")
-    chop_id := ps.ByName("chopid")
-    log.Println(chop_id, username)
+    chopid := ps.ByName("chopid")
+    log.Printf("Requesting %s slapchop, from %s", chopid, username)
+
+    path = fmt.Sprintf("%s/%s/%s", BasePath, username, chopid)
+
+    files, _ := ioutil.ReadDir(path)
+    for _, f := range files {
+            fmt.Println(f.Name())
+    }
+
+    w.WriteHeader(http.StatusOK)
+    w.Write([]byte(""))
 }

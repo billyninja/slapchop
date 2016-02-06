@@ -16,12 +16,11 @@ func main() {
 
 	router.POST("/chopit/:username", actions.Create)
 	router.GET("/chopit/:username/:chopid", actions.Read)
-	
+	router.GET("/chopit/:username", actions.ReadAll)
+
 	/*	TODO
-
+	router.DELETE("/chopit/:username/:chopid", actions.Delete)
 	router.GET("/random/:chopid", actions.Random)
-	router.DELETE("/chopit/:chopid", actions.Delete)
-
 	*/
 
 	err := http.ListenAndServe(":" + PortNumber, router)

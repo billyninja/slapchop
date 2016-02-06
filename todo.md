@@ -1,6 +1,9 @@
 # TODO: 
 
-# Flags
+## Actions
+	GET Read(username)
+
+## Flags
 	- Custom Upload dir
 
 ## Basic validation
