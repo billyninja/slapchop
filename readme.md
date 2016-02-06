@@ -1,4 +1,4 @@
-# SLAPCHOP
+# SLAPCHOP [![Build Status](https://travis-ci.org/billyninja/slapchop.svg?branch=master)](https://travis-ci.org/billyninja/slapchop) [![GoReport](https://goreportcard.com/badge/billyninja/slapchop)](http://goreportcard.com/report/billyninja/slapchop) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 ---
 
 [![Slapchop video!](http://img.youtube.com/vi/rUbWjIKxrrs/0.jpg)](http://www.youtube.com/watch?v=rUbWjIKxrrs)
