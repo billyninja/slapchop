@@ -12,17 +12,21 @@ Post images to this services, and it will slice and dice it into serveral image 
 ## Options/Flags
 
 - -port Port number for the process **default:** "3001"
-- -upload_dir Base path for the user uploaded files/slapchops **default:** "/tmp/slapchop"
+- -upload_dir Base path for the user uploaded files/slapchops **default:** "/tmp/slapchop/upload"
 - -v Verbose Mode **default:** false
 
 ----
 ## Requirements for dev and building
 `go get github.com/julienschmidt/httprouter`
-`go get github.com/go-resty/resty
+`go get github.com/go-resty/resty`
 
 ----
 ## Requirements for production
 `Just the properly configured binary ;)`
+
+----
+## Running the tests
+`go test -v -cover ./...`
 
 
 ---

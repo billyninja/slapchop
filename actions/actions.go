@@ -17,7 +17,7 @@ import (
 /* Constants */
 var MaxFileSize = int64(1024 * 1024 * 5) // MB
 var TileSize = 64                        // pixels
-var BasePath = "upload"
+var BasePath = "/tmp/slapchop/upload"
 
 /* Let's use here the CRUD standard names */
 func Create(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
