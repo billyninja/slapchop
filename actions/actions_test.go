@@ -66,7 +66,7 @@ func TestCreate(t *testing.T) {
 
 	mw := new(mockResponseWriter)
 	params := httprouter.Params{
-		httprouter.Param{"username", "testing"},
+		httprouter.Param{Key: "username", Value: "testing"},
 	}
 
 	Create(mw, req, params)
@@ -77,7 +77,7 @@ func TestReadAll(t *testing.T) {
 	req, _ := http.NewRequest("GET", "/chopit/billyninja", nil)
 	mw := new(mockResponseWriter)
 	params := httprouter.Params{
-		httprouter.Param{"username", "testing"},
+		httprouter.Param{Key: "username", Value: "testing"},
 	}
 
 	ReadAll(mw, req, params)
@@ -88,8 +88,8 @@ func TestRead(t *testing.T) {
 	req, _ := http.NewRequest("GET", "/chopit/billyninja", nil)
 	mw := new(mockResponseWriter)
 	params := httprouter.Params{
-		httprouter.Param{"username", "testing"},
-		httprouter.Param{"chopid", "ASDQWE1111"},
+		httprouter.Param{Key: "username", Value: "testing"},
+		httprouter.Param{Key: "chopid", Value: "ASDQWE1111"},
 	}
 
 	Read(mw, req, params)
@@ -100,8 +100,8 @@ func TestDelete(t *testing.T) {
 	req, _ := http.NewRequest("DELETE", "/chopit/billyninja", nil)
 	mw := new(mockResponseWriter)
 	params := httprouter.Params{
-		httprouter.Param{"username", "testing"},
-		httprouter.Param{"chopid", "ASDQWE1111"},
+		httprouter.Param{Key: "username", Value: "testing"},
+		httprouter.Param{Key: "chopid", Value: "ASDQWE1111"},
 	}
 
 	Delete(mw, req, params)
