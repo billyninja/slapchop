@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/billyninja/slapchop/chopper"
+	"github.com/billyninja/slapchop/puzzler"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
-	//	"slapchop/puzzler"
 	"time"
 
 	// 3rd party
@@ -47,8 +47,8 @@ func Create(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	}
 
 	resp := chopper.CreateResponse{
-		User:   "temp-todo",
-		ChopId: "temp-todo",
+		User:   username,
+		ChopId: chop_id,
 		Href:   "temp-todo",
 		Tiles:  tilesR,
 	}
@@ -57,7 +57,9 @@ func Create(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	if err != nil {
 		log.Fatalf("errr %v", err)
 	}
-	println(json_resp)
+
+	puzzler.CreatePuzzle(username, tilesR)
+
 	w.Write(json_resp)
 	w.WriteHeader(http.StatusOK)
 }

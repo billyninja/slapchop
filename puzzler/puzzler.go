@@ -1,17 +1,23 @@
 package puzzler
 
 import (
+	"encoding/json"
 	"github.com/billyninja/slapchop/chopper"
 	"github.com/go-resty/resty"
 )
 
-func CreatePuzzle(chopper.CreateResponse) {
-	resp, err := resty.R().
-		SetHeader("Content-Type", "application/json").
-		SetBody(`{"username":"admin", "password":"testpass"}`).
-		Post("http://localhost:8000/solutions/")
+func CreatePuzzle(username string, tiles []*chopper.TileEntry) {
 
-	println(resp, err)
+	pieces, _ := json.Marshal(tiles)
+
+	resp, err := resty.R().
+		SetBasicAuth("admin", "teste123").
+		SetFormData(map[string]string{
+		"username": username,
+		"pieces":   string(pieces),
+	}).
+		SetHeader("Content-Type", "application/json").
+		Post("http://localhost:8000/solutions/")
 
 	return
 }
