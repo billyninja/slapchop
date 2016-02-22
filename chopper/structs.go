@@ -1,4 +1,4 @@
-package actions
+package chopper
 
 type SlapchopEntry struct {
 	Id   string
@@ -8,9 +8,20 @@ type SlapchopEntry struct {
 type TileEntry struct {
 	Filename string `json:"filename"`
 	Href     string `json:"href"`
+
+	PosX int `json:"pos_x"`
+	PosY int `json:"pos_y"`
+	AbsX int `json:"abs_x"`
+	AbsY int `json:"abs_y"`
 }
 
 type ReadResponse struct {
+	User  string       `json:"user"`
+	Id    string       `json:"id"`
+	Tiles []*TileEntry `json:"tiles"`
+}
+
+type DeleteResponse struct {
 	User  string       `json:"user"`
 	Id    string       `json:"id"`
 	Tiles []*TileEntry `json:"tiles"`
