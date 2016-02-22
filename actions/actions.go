@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	//	"slapchop/puzzler"
 	"time"
 
 	// 3rd party
@@ -40,9 +41,25 @@ func Create(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	tiles := chopper.Slice(*img, TileSize, format, path)
 	chopper.SaveAll(tiles)
 
-	// TODO write proper JSON output
+	tilesR := make([]*chopper.TileEntry, len(tiles))
+	for i, t := range tiles {
+		tilesR[i] = t.ToResp()
+	}
+
+	resp := chopper.CreateResponse{
+		User:   "temp-todo",
+		ChopId: "temp-todo",
+		Href:   "temp-todo",
+		Tiles:  tilesR,
+	}
+
+	json_resp, err := json.Marshal(&resp)
+	if err != nil {
+		log.Fatalf("errr %v", err)
+	}
+	println(json_resp)
+	w.Write(json_resp)
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(""))
 }
 
 func ReadAll(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
@@ -65,16 +82,16 @@ func Read(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 	path := fmt.Sprintf("%s/%s/%s", BasePath, username, chopid)
 	files, _ := ioutil.ReadDir(path)
-	var tiles []*TileEntry
+	var tiles []*chopper.TileEntry
 	for _, f := range files {
 		fname := f.Name()
-		tiles = append(tiles, &TileEntry{
+		tiles = append(tiles, &chopper.TileEntry{
 			Filename: fname,
 			Href:     fmt.Sprintf("%s/%s", path, fname),
 		})
 	}
 
-	resp := ReadResponse{
+	resp := chopper.ReadResponse{
 		User:  username,
 		Id:    chopid,
 		Tiles: tiles,

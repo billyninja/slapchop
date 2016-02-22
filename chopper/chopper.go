@@ -15,17 +15,10 @@ type Tile struct {
 	filename string
 	image    *image.RGBA
 	format   string
-}
-
-func Load(file multipart.File) (*image.Image, string, error) {
-
-	// Decoding the image from the file
-	img, format, err := image.Decode(file)
-	if err != nil {
-		log.Println(err)
-		return nil, "", err
-	}
-	return &img, format, err
+	PosX     int
+	PosY     int
+	AbsX     int
+	AbsY     int
 }
 
 func (t *Tile) Save() {
@@ -38,7 +31,28 @@ func (t *Tile) Save() {
 	case t.format == "png":
 		png.Encode(toimg, t.image)
 	}
+}
 
+func (t *Tile) ToResp() *TileEntry {
+	return &TileEntry{
+		Filename: t.filename,
+		Href:     "temp-todo",
+		PosX:     t.PosX,
+		PosY:     t.PosY,
+		AbsX:     t.AbsX,
+		AbsY:     t.AbsY,
+	}
+}
+
+func Load(file multipart.File) (*image.Image, string, error) {
+
+	// Decoding the image from the file
+	img, format, err := image.Decode(file)
+	if err != nil {
+		log.Println(err)
+		return nil, "", err
+	}
+	return &img, format, err
 }
 
 func SaveAll(tiles []*Tile) {
@@ -83,6 +97,10 @@ func Slice(original image.Image, tileSize int, format string, path string) []*Ti
 				filename: fmt.Sprintf("%s/%d_%d.jpg", path, y, x),
 				image:    subImg,
 				format:   format,
+				PosX:     x,
+				PosY:     y,
+				AbsX:     x * tileSize,
+				AbsY:     y * tileSize,
 			}
 
 			idx += 1
