@@ -36,7 +36,7 @@ func (t *Tile) Save() {
 func (t *Tile) ToResp() *TileEntry {
 	return &TileEntry{
 		Filename: t.filename,
-		Href:     "temp-todo",
+		Href:     "https://temp-todo.com/slapchop/",
 		PosX:     t.PosX,
 		PosY:     t.PosY,
 		AbsX:     t.AbsX,

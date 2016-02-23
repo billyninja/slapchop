@@ -6,7 +6,7 @@ type SlapchopEntry struct {
 }
 
 type TileEntry struct {
-	Filename string `json:"filename"`
+	Filename string `json:"-"`
 	Href     string `json:"href"`
 
 	PosX int `json:"pos_x"`

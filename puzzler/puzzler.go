@@ -4,9 +4,10 @@ import (
 	"encoding/json"
 	"github.com/billyninja/slapchop/chopper"
 	"github.com/go-resty/resty"
+	"net/http"
 )
 
-func CreatePuzzle(username string, tiles []*chopper.TileEntry) {
+func CreatePuzzle(username string, tiles []*chopper.TileEntry) (int, *http.Response, error) {
 
 	pieces, _ := json.Marshal(tiles)
 
@@ -17,7 +18,10 @@ func CreatePuzzle(username string, tiles []*chopper.TileEntry) {
 		"pieces":   string(pieces),
 	}).
 		SetHeader("Content-Type", "application/json").
-		Post("http://localhost:8000/solutions/")
+		Post("http://localhost:8000/puzzles/")
+	if err != nil {
+		return 0, nil, err
+	}
 
-	return
+	return resp.StatusCode(), resp.RawResponse, err
 }

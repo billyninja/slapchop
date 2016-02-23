@@ -49,7 +49,7 @@ func Create(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	resp := chopper.CreateResponse{
 		User:   username,
 		ChopId: chop_id,
-		Href:   "temp-todo",
+		Href:   "https://temp-todo.com/slapchop/",
 		Tiles:  tilesR,
 	}
 
@@ -58,7 +58,8 @@ func Create(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		log.Fatalf("errr %v", err)
 	}
 
-	puzzler.CreatePuzzle(username, tilesR)
+	status, response, err := puzzler.CreatePuzzle(username, tilesR)
+	println(status, response, err)
 
 	w.Write(json_resp)
 	w.WriteHeader(http.StatusOK)
