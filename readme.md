@@ -12,8 +12,15 @@ Post images to this services, and it will slice and dice it into serveral image 
 ## Options/Flags
 
 - -port Port number for the process **default:** "3001"
-- -upload_dir Base path for the user uploaded files/slapchops **default:** "/tmp/slapchop/upload"
-- -v Verbose Mode **default:** false
+- -puzzler Host/Url for the puzzle service **default:** "localhost:8000"
+
+`cd $GOPATH/src/github.com/billyninja/slapchop`
+
+`go build .`
+
+`./slapchop -port=9000 -puzzler=localhosthost:8001`
+>Notice that I'm changing the default commandline args/flags on purpose
+
 
 ----
 ## Requirements for dev and building
