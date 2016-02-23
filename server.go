@@ -8,10 +8,10 @@ import (
 	"net/http"
 )
 
-var PortNumber = *flag.String("port", "3001", "HTTP port number")
+var FlagPortNumber = flag.String("port", "3001", "HTTP port number")
 
 func main() {
-
+	flag.Parse()
 	router := httprouter.New()
 
 	router.POST("/chopit/:username", actions.Create)
@@ -23,7 +23,8 @@ func main() {
 		router.GET("/random/:chopid", actions.Random)
 	*/
 
-	err := http.ListenAndServe(":"+PortNumber, router)
+	println("Running on: " + *FlagPortNumber)
+	err := http.ListenAndServe(":"+*FlagPortNumber, router)
 	if err != nil {
 		log.Fatal(err)
 	}

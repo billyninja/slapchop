@@ -2,13 +2,16 @@ package puzzler
 
 import (
 	"encoding/json"
+	"flag"
 	"github.com/billyninja/slapchop/chopper"
 	"github.com/go-resty/resty"
 	"net/http"
 )
 
-func CreatePuzzle(username string, tiles []*chopper.TileEntry) (int, *http.Response, error) {
+var FlagPuzzlerHost = flag.String("puzzler", "localhost:8000", "Puzzler Service remote url")
 
+func CreatePuzzle(username string, tiles []*chopper.TileEntry) (int, *http.Response, error) {
+	//flag.Parse()
 	pieces, _ := json.Marshal(tiles)
 
 	resp, err := resty.R().
@@ -18,7 +21,7 @@ func CreatePuzzle(username string, tiles []*chopper.TileEntry) (int, *http.Respo
 		"pieces":   string(pieces),
 	}).
 		SetHeader("Content-Type", "application/json").
-		Post("http://localhost:8000/puzzles/")
+		Post("http://" + *FlagPuzzlerHost + "/puzzles/")
 	if err != nil {
 		return 0, nil, err
 	}

@@ -2,6 +2,7 @@ package actions
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"github.com/billyninja/slapchop/chopper"
 	"github.com/billyninja/slapchop/puzzler"
@@ -18,7 +19,8 @@ import (
 /* Constants */
 var MaxFileSize = int64(1024 * 1024 * 5) // MB
 var TileSize = 64                        // pixels
-var BasePath = "/tmp/slapchop/upload"
+
+var FlagUploadDir = flag.String("upload", "/tmp/slapchop/upload", "Where the uploaded chops will be stored")
 
 /* Let's use here the CRUD standard names */
 func Create(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
@@ -36,7 +38,7 @@ func Create(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	// Setting to close filehandler at the end of this function
 	defer file.Close()
 	chop_id := time.Now().Format("020106150405")
-	path := fmt.Sprintf("%s/%s/%s", BasePath, username, chop_id)
+	path := fmt.Sprintf("%s/%s/%s", FlagUploadDir, username, chop_id)
 	img, format, err := chopper.Load(file)
 	tiles := chopper.Slice(*img, TileSize, format, path)
 	chopper.SaveAll(tiles)
@@ -70,7 +72,7 @@ func ReadAll(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	username := ps.ByName("username")
 	log.Printf("Requesting all slapchops for %s", username)
 
-	path := fmt.Sprintf("%s/%s", BasePath, username)
+	path := fmt.Sprintf("%s/%s", FlagUploadDir, username)
 	println(path)
 
 	w.WriteHeader(http.StatusOK)
@@ -83,7 +85,7 @@ func Read(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	chopid := ps.ByName("chopid")
 	log.Printf("Requesting %s slapchop, from %s", chopid, username)
 
-	path := fmt.Sprintf("%s/%s/%s", BasePath, username, chopid)
+	path := fmt.Sprintf("%s/%s/%s", FlagUploadDir, username, chopid)
 	files, _ := ioutil.ReadDir(path)
 	var tiles []*chopper.TileEntry
 	for _, f := range files {
@@ -110,7 +112,7 @@ func Delete(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	chopid := ps.ByName("chopid")
 	log.Printf("Deleting %s slapchop, from %s", chopid, username)
 
-	path := fmt.Sprintf("%s/%s/%s", BasePath, username, chopid)
+	path := fmt.Sprintf("%s/%s/%s", FlagUploadDir, username, chopid)
 	err := os.RemoveAll(path)
 	if err != nil {
 		return
