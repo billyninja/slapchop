@@ -33,10 +33,11 @@ func (t *Tile) Save() {
 	}
 }
 
-func (t *Tile) ToResp() *TileEntry {
+func (t *Tile) ToResp(basepath string) *TileEntry {
+	href := fmt.Sprintf("%s/%d_%d.%s", basepath, t.PosY, t.PosX, t.format)
 	return &TileEntry{
 		Filename: t.filename,
-		Href:     "https://temp-todo.com/slapchop/",
+		Href:     href,
 		PosX:     t.PosX,
 		PosY:     t.PosY,
 		AbsX:     t.AbsX,
@@ -94,7 +95,7 @@ func Slice(original image.Image, tileSize int, format string, path string) []*Ti
 
 			os.MkdirAll(path, 0777)
 			tiles[idx] = &Tile{
-				filename: fmt.Sprintf("%s/%d_%d.jpg", path, y, x),
+				filename: fmt.Sprintf("%s/%d_%d.jpeg", path, y, x),
 				image:    subImg,
 				format:   format,
 				PosX:     x,

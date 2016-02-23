@@ -23,9 +23,16 @@ func main() {
 		router.GET("/random/:chopid", actions.Random)
 	*/
 
+	// Serving files as well! Who needs nginx?
+	go func() {
+		http.ListenAndServe(":8080",
+			http.FileServer(http.Dir("/tmp/slapchop")))
+	}()
+
 	println("Running on: " + *FlagPortNumber)
 	err := http.ListenAndServe(":"+*FlagPortNumber, router)
 	if err != nil {
 		log.Fatal(err)
 	}
+
 }

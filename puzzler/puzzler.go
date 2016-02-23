@@ -11,7 +11,6 @@ import (
 var FlagPuzzlerHost = flag.String("puzzler", "localhost:8000", "Puzzler Service remote url")
 
 func CreatePuzzle(username string, tiles []*chopper.TileEntry) (int, *http.Response, error) {
-	//flag.Parse()
 	pieces, _ := json.Marshal(tiles)
 
 	resp, err := resty.R().
