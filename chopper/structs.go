@@ -33,8 +33,10 @@ type ReadAllResponse struct {
 }
 
 type CreateResponse struct {
-	User   string       `json:"user"`
-	ChopId string       `json:"chopid"`
-	Href   string       `json:"href"`
-	Tiles  []*TileEntry `json:"tiles"`
+	User         string       `json:"user"`
+	ChopId       string       `json:"chopid"`
+	Href         string       `json:"href"`
+	PuzzleHref   string       `json:"puzzle_href"`
+	SolutionHref string       `json:"solution_href"`
+	Tiles        []*TileEntry `json:"tiles"`
 }

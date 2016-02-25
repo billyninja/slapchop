@@ -18,7 +18,7 @@ Post images to this services, and it will slice and dice it into serveral image 
 
 `go build .`
 
-`./slapchop -port=9000 -puzzler=localhosthost:8001`
+`./slapchop -port=9000 -puzzler=username:pwd@localhosthost:8001`
 >Notice that I'm changing the default commandline args/flags on purpose
 
 

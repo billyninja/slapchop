@@ -3,6 +3,7 @@ package actions
 import (
 	"bytes"
 	"encoding/json"
+	"flag"
 	"fmt"
 	"github.com/billyninja/slapchop/chopper"
 	"github.com/billyninja/slapchop/puzzler"
@@ -20,8 +21,9 @@ import (
 /* Constants */
 var MaxFileSize = int64(1024 * 1024 * 5) // MB
 var TileSize = 64                        // pixels
-
 var UploadDir = "/tmp/slapchop/upload"
+
+var FlagPuzzlerHost = flag.String("puzzler", "", "Puzzler Service remote url")
 
 /* Let's use here the CRUD standard names */
 func Create(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
@@ -58,13 +60,25 @@ func Create(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		Tiles:  tilesR,
 	}
 
+	// If it is setted to connect with Puzzler Service
+	if len(*FlagPuzzlerHost) > 0 {
+		status, body, err := puzzler.CreatePuzzle(*FlagPuzzlerHost, username, tilesR)
+		if err != nil {
+			log.Print(err)
+		}
+
+		if status == 201 {
+			puzzler_resp := puzzler.CreateResponse{}
+			_ = json.Unmarshal(body, &puzzler_resp)
+			resp.PuzzleHref = puzzler_resp.PuzzleHref
+			resp.SolutionHref = puzzler_resp.SolutionHref
+		}
+	}
+
 	json_resp, err := json.Marshal(&resp)
 	if err != nil {
 		log.Fatalf("errr %v", err)
 	}
-
-	status, response, err := puzzler.CreatePuzzle(username, tilesR)
-	println(status, response, err)
 
 	w.Write(json_resp)
 	w.WriteHeader(http.StatusOK)
