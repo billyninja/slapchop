@@ -1,8 +1,8 @@
 package chopper
 
 type SlapchopEntry struct {
-	Id   string
-	Href string
+	Id   string `json:"id"`
+	Href string `json:"href"`
 }
 
 type TileEntry struct {
@@ -28,13 +28,13 @@ type DeleteResponse struct {
 }
 
 type ReadAllResponse struct {
-	User      string
-	Slapchops []*SlapchopEntry
+	User      string           `json:"user"`
+	Slapchops []*SlapchopEntry `json:"slapchops"`
 }
 
 type CreateResponse struct {
-	User   string
-	ChopId string
-	Href   string
-	Tiles  []*TileEntry
+	User   string       `json:"user"`
+	ChopId string       `json:"chopid"`
+	Href   string       `json:"href"`
+	Tiles  []*TileEntry `json:"tiles"`
 }

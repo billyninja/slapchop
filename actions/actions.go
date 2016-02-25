@@ -76,10 +76,22 @@ func ReadAll(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	log.Printf("Requesting all slapchops for %s", username)
 
 	path := fmt.Sprintf("%s/%s", UploadDir, username)
-	println(path)
+	dirs, _ := ioutil.ReadDir(path)
+	slapchops := make([]*chopper.SlapchopEntry, len(dirs))
+	for i, d := range dirs {
+		slapchops[i] = &chopper.SlapchopEntry{
+			Id:   d.Name(),
+			Href: fmt.Sprintf("/chopit/%s/%s", username, d.Name()),
+		}
+	}
+	resp := chopper.ReadAllResponse{
+		User:      username,
+		Slapchops: slapchops,
+	}
 
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(""))
+	json_resp, _ := json.Marshal(&resp)
+	w.Write(json_resp)
 }
 
 func Read(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
