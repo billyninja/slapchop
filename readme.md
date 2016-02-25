@@ -48,7 +48,3 @@ Post images to this services, and it will slice and dice it into serveral image 
 - **GET** `/chopit/$CHOP_ID` -> Retrieves info and href on the given $CHOP_ID
 
 - **DELETE** `/chopit/$CHOP_ID` -> Deletes this entry and its files
-
-- **GET** `/random/$CHOP_ID` -> Retrieves a randomized list of the slapchop tiles
-
-- **GET** `/random/$CHOP_ID?preview=1` -> Retrieves info and href on the given $CHOP_ID

@@ -6,12 +6,16 @@ import (
 	"github.com/julienschmidt/httprouter"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
+
+	"runtime"
 )
 
 var FlagPortNumber = flag.String("port", "3001", "HTTP port number")
 
-func main() {
-	flag.Parse()
+func InitServer(port string) chan os.Signal {
 	router := httprouter.New()
 
 	router.POST("/chopit/:username", actions.Create)
@@ -19,9 +23,7 @@ func main() {
 	router.GET("/chopit/:username/:chopid", actions.Read)
 	router.DELETE("/chopit/:username/:chopid", actions.Delete)
 
-	/*	TODO
-		router.GET("/random/:chopid", actions.Random)
-	*/
+	runtime.GOMAXPROCS(1)
 
 	// Serving files as well! Who needs nginx?
 	go func() {
@@ -29,10 +31,22 @@ func main() {
 			http.FileServer(http.Dir("/tmp/slapchop")))
 	}()
 
-	println("Running on: " + *FlagPortNumber)
-	err := http.ListenAndServe(":"+*FlagPortNumber, router)
-	if err != nil {
-		log.Fatal(err)
-	}
+	go func() {
+		println("Running on: " + port)
+		err := http.ListenAndServe(":"+port, router)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}()
 
+	LiveChan := make(chan os.Signal, 1)
+	signal.Notify(LiveChan, os.Interrupt, syscall.SIGTERM)
+
+	return LiveChan
+}
+
+func main() {
+	flag.Parse()
+	c := InitServer(*FlagPortNumber)
+	<-c
 }

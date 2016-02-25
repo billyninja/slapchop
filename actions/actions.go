@@ -1,12 +1,14 @@
 package actions
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"github.com/billyninja/slapchop/chopper"
 	"github.com/billyninja/slapchop/puzzler"
 	"io/ioutil"
 	"log"
+	"mime/multipart"
 	"net/http"
 	"os"
 	"time"
@@ -121,4 +123,39 @@ func Delete(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte(`ok!`))
+}
+
+//TEST HELPER: Creates a new file upload http request with optional extra params
+func NewfileUploadRequest(uri string, paramName, path string) (*http.Request, error) {
+
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	fileContents, err := ioutil.ReadAll(file)
+	if err != nil {
+		return nil, err
+	}
+	fi, err := file.Stat()
+	if err != nil {
+		return nil, err
+	}
+	file.Close()
+
+	body := new(bytes.Buffer)
+	writer := multipart.NewWriter(body)
+	part, err := writer.CreateFormFile(paramName, fi.Name())
+	if err != nil {
+		return nil, err
+	}
+	part.Write(fileContents)
+	err = writer.Close()
+	if err != nil {
+		return nil, err
+	}
+
+	request, err := http.NewRequest("POST", uri, body)
+	request.Header.Add("Content-Type", writer.FormDataContentType())
+
+	return request, err
 }
