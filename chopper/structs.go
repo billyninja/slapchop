@@ -3,7 +3,10 @@ package chopper
 import (
 	"fmt"
 	"io/ioutil"
+	"math/rand"
 	"os"
+	"strconv"
+	"strings"
 )
 
 type SlapchopEntry struct {
@@ -78,4 +81,50 @@ func (s *SlapchopEntry) LoadTiles(host string, files []os.FileInfo) []*TileEntry
 	}
 
 	return tiles
+}
+
+func (s *SlapchopEntry) Grid(tiles []*TileEntry) [][40]string {
+	/* Organize the tiles in a matrix respecting the original organization
+	 */
+	g := make([][40]string, 40)
+	for _, t := range tiles {
+		cordStr := strings.Split(strings.Split(t.Filename, ".")[0], "_")
+		pX, _ := strconv.Atoi(cordStr[0])
+		pY, _ := strconv.Atoi(cordStr[1])
+		g[pX][pY] = t.Href
+	}
+
+	return g
+}
+
+func (s *SlapchopEntry) ShuffleGrid(grid [][40]string) [][40]string {
+	boundY := 1
+	boundX := 1
+	i := 2
+
+	for i > 0 {
+
+		for x, _ := range grid {
+			for y, _ := range grid[x] {
+				if grid[x][y] == "" {
+					break
+				}
+
+				if y > boundY {
+					boundY = y
+				}
+				if x > boundX {
+					boundY = x
+				}
+				rx := rand.Intn(boundX)
+				ry := rand.Intn(boundY)
+				temp := grid[x][y]
+				grid[x][y] = grid[rx][ry]
+				grid[rx][ry] = temp
+			}
+		}
+		i--
+	}
+
+	return grid
 }

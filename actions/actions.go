@@ -11,8 +11,6 @@ import (
 	"mime/multipart"
 	"net/http"
 	"os"
-	"strconv"
-	"strings"
 	"time"
 
 	// 3rd party
@@ -151,16 +149,25 @@ func (ac *ActionsConfig) Preview(w http.ResponseWriter, r *http.Request, ps http
 	s := chopper.NewSlapchop(ac.Host, username, chopid)
 	t_files, _ := s.LoadFiles(ac.UploadDir)
 	tiles := s.LoadTiles(ac.HostName, t_files)
+	grid := s.Grid(tiles)
 
-	m := make([][40]string, 40)
-	for _, t := range tiles {
-		cordStr := strings.Split(strings.Split(t.Filename, ".")[0], "_")
-		pX, _ := strconv.Atoi(cordStr[0])
-		pY, _ := strconv.Atoi(cordStr[1])
-		m[pX][pY] = t.Href
-	}
+	html := mustache.RenderFile("actions/preview.html", grid)
 
-	html := mustache.RenderFile("actions/preview.html", m)
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(html))
+}
+
+func (ac *ActionsConfig) Random(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+
+	username := ps.ByName("username")
+	chopid := ps.ByName("chopid")
+	s := chopper.NewSlapchop(ac.Host, username, chopid)
+	t_files, _ := s.LoadFiles(ac.UploadDir)
+	tiles := s.LoadTiles(ac.HostName, t_files)
+	grid := s.Grid(tiles)
+	grid = s.ShuffleGrid(grid)
+
+	html := mustache.RenderFile("actions/preview.html", grid)
 
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte(html))
