@@ -53,7 +53,7 @@ func (ac *ActionsConfig) Create(w http.ResponseWriter, r *http.Request, ps httpr
 	tiles := chopper.Slice(*img, ac.TileSize, format, path)
 	chopper.SaveAll(tiles)
 
-	href_base := fmt.Sprintf("/upload/%s/%s", username, chop_id)
+	href_base := fmt.Sprintf("http://%s:8080/upload/%s/%s", ac.HostName, username, chop_id)
 
 	tilesR := make([]*chopper.TileEntry, len(tiles))
 	for i, t := range tiles {
