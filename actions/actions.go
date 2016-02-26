@@ -63,7 +63,7 @@ func (ac *ActionsConfig) Create(w http.ResponseWriter, r *http.Request, ps httpr
 	resp := chopper.CreateResponse{
 		User:   username,
 		ChopId: chop_id,
-		Href:   fmt.Sprintf("/chopit/%s/%s", username, chop_id),
+		Href:   fmt.Sprintf("http://%s/chopit/%s/%s", ac.Host, username, chop_id),
 		Tiles:  tilesR,
 	}
 
