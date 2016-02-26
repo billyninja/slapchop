@@ -100,7 +100,7 @@ func (s *SlapchopEntry) Grid(tiles []*TileEntry) [][40]string {
 func (s *SlapchopEntry) ShuffleGrid(grid [][40]string) [][40]string {
 	boundY := 1
 	boundX := 1
-	i := 2
+	i := 20
 
 	for i > 0 {
 
