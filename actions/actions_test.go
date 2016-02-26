@@ -22,6 +22,16 @@ func (m *mockResponseWriter) WriteString(s string) (n int, err error) {
 
 func (m *mockResponseWriter) WriteHeader(int) {}
 
+var ac = ActionsConfig{
+	HostName:      "localhost",
+	Port:          "3001",
+	Host:          "localhost:3001",
+	UploadDir:     "/tmp/slapcho/upload",
+	MaxUploadSize: int64(1024 * 1024 * 5),
+	TileSize:      64,
+	PuzzlerHost:   "",
+}
+
 func TestCreate(t *testing.T) {
 
 	req, _ := NewfileUploadRequest("/chopit/billyninja", "uploadfile", "../test/gopher.jpg")
@@ -31,7 +41,7 @@ func TestCreate(t *testing.T) {
 		httprouter.Param{Key: "username", Value: "testing"},
 	}
 
-	Create(mw, req, params)
+	ac.Create(mw, req, params)
 }
 
 func TestReadAll(t *testing.T) {
@@ -42,7 +52,7 @@ func TestReadAll(t *testing.T) {
 		httprouter.Param{Key: "username", Value: "testing"},
 	}
 
-	ReadAll(mw, req, params)
+	ac.ReadAll(mw, req, params)
 }
 
 func TestRead(t *testing.T) {
@@ -54,7 +64,7 @@ func TestRead(t *testing.T) {
 		httprouter.Param{Key: "chopid", Value: "ASDQWE1111"},
 	}
 
-	Read(mw, req, params)
+	ac.Read(mw, req, params)
 }
 
 func TestDelete(t *testing.T) {
@@ -66,5 +76,5 @@ func TestDelete(t *testing.T) {
 		httprouter.Param{Key: "chopid", Value: "ASDQWE1111"},
 	}
 
-	Delete(mw, req, params)
+	ac.Delete(mw, req, params)
 }

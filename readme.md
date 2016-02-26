@@ -10,9 +10,12 @@ Post images to this services, and it will slice and dice it into serveral image 
 
 
 ## Options/Flags
-
-- -port Port number for the process **default:** "3001"
-- -puzzler Host/Url for the puzzle service **default:** "localhost:8000"
+- -host Default: "localhost, "The host address which it will be visible
+- -puzzler Default: "" Puzzler Service remote url
+- -port Default: "3001 HTTP port number
+- -tile Default: 64Tile Size in pixels
+- -size Default: int64(1024*1024*5) Max upload file size in BYTES
+- -dir Default: "/tmp/slapchop/upload"
 
 `cd $GOPATH/src/github.com/billyninja/slapchop`
 
