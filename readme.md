@@ -31,6 +31,8 @@ Post images to this services, and it will slice and dice it into serveral image 
 
 `go get github.com/go-resty/resty`
 
+`go get github.com/hoisie/mustache`
+
 ----
 ## Requirements for production
 `Just the properly configured binary ;)`
