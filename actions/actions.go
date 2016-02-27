@@ -28,6 +28,7 @@ type ActionsConfig struct {
 	MaxUploadSize int64
 	TileSize      int
 	PuzzlerHost   string
+	TemplatePath  string
 }
 
 /* Let's use here the CRUD standard names */
@@ -151,7 +152,7 @@ func (ac *ActionsConfig) Preview(w http.ResponseWriter, r *http.Request, ps http
 	tiles := s.LoadTiles(ac.HostName, t_files)
 	grid := s.Grid(tiles)
 
-	html := mustache.RenderFile("templates/preview.html", grid)
+	html := mustache.RenderFile(ac.TemplatePath, grid)
 
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte(html))
@@ -167,7 +168,7 @@ func (ac *ActionsConfig) Random(w http.ResponseWriter, r *http.Request, ps httpr
 	grid := s.Grid(tiles)
 	grid = s.ShuffleGrid(grid)
 
-	html := mustache.RenderFile("templates/preview.html", grid)
+	html := mustache.RenderFile(ac.TemplatePath, grid)
 
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte(html))

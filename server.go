@@ -20,6 +20,7 @@ var FlagPortNumber = flag.String("port", "3001", "HTTP port number")
 var FlagTileSize = flag.Int("tile", 64, "Tile Size in pixels")
 var FlagMaxUploadSize = flag.Int64("size", int64(1024*1024*5), "Max upload file size in BYTES")
 var FlagUploadDir = flag.String("dir", "/tmp/slapchop/upload", "Local path to the uploaded files")
+var FlagTemplatePath = flag.String("template", "notsetted.html", "Absolute path to the preview.html file")
 
 func InitServer(port string) chan os.Signal {
 	router := httprouter.New()
@@ -32,6 +33,7 @@ func InitServer(port string) chan os.Signal {
 		MaxUploadSize: *FlagMaxUploadSize,
 		TileSize:      *FlagTileSize,
 		PuzzlerHost:   *FlagPuzzlerHost,
+		TemplatePath:  *FlagTemplatePath,
 	}
 
 	router.POST("/chopit/:username", ac.Create)
