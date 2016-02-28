@@ -131,7 +131,6 @@ func (ac *ActionsConfig) Read(w http.ResponseWriter, r *http.Request, ps httprou
 func (ac *ActionsConfig) Delete(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	username := ps.ByName("username")
 	chopid := ps.ByName("chopid")
-	log.Printf("Deleting %s slapchop, from %s", chopid, username)
 
 	path := fmt.Sprintf("%s/%s/%s", ac.UploadDir, username, chopid)
 	err := os.RemoveAll(path)
@@ -140,7 +139,7 @@ func (ac *ActionsConfig) Delete(w http.ResponseWriter, r *http.Request, ps httpr
 	}
 
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(`ok!`))
+	w.Write([]byte(fmt.Sprintf("%s %s successfully deleted", username, chopid)))
 }
 
 func (ac *ActionsConfig) Preview(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
