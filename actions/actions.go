@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"github.com/billyninja/slapchop/chopper"
 	"github.com/billyninja/slapchop/puzzler"
+	"image"
+	"image/draw"
 	"io/ioutil"
 	"log"
 	"mime/multipart"
@@ -171,6 +173,40 @@ func (ac *ActionsConfig) Random(w http.ResponseWriter, r *http.Request, ps httpr
 
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte(html))
+}
+
+func (ac *ActionsConfig) Pixelette(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+
+	username := ps.ByName("username")
+	chopid := ps.ByName("chopid")
+	s := chopper.NewSlapchop(ac.Host, username, chopid)
+	t_files, _ := s.LoadFiles(ac.UploadDir)
+
+	up := s.UploadPoint(ac.UploadDir)
+	var sR, sG, sB, sA uint64
+	sR, sG, sB, sA = 0, 0, 0, 0
+	for _, f := range t_files {
+		file, _ := os.Open(fmt.Sprintf("%s/%s", up, f.Name()))
+		img, _, _ := chopper.Load(file)
+		subImg := image.NewRGBA(image.Rect(0, 0, ac.TileSize, ac.TileSize))
+		draw.Draw(subImg, subImg.Bounds(), *img, image.Rect(0, 0, ac.TileSize, ac.TileSize).Min, draw.Src)
+
+		for x := 0; x <= ac.TileSize; x++ {
+			for y := 0; y <= ac.TileSize; y++ {
+				r, g, b, a := subImg.At(x, y).RGBA()
+				sR += uint64(r)
+				sG += uint64(g)
+				sB += uint64(b)
+				sA += uint64(a)
+			}
+		}
+		ms := uint64(ac.TileSize * ac.TileSize)
+		println(sR/ms, sG/ms, sB/ms, sA/ms)
+
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(``))
 }
 
 //TEST HELPER: Creates a new file upload http request with optional extra params

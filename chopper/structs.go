@@ -62,6 +62,10 @@ func NewSlapchop(host_str, username, id string) *SlapchopEntry {
 	}
 }
 
+func (s *SlapchopEntry) UploadPoint(UploadDir string) string {
+	return fmt.Sprintf("%s/%s/%s", UploadDir, s.User, s.Id)
+}
+
 func (s *SlapchopEntry) LoadFiles(UploadDir string) ([]os.FileInfo, error) {
 	path := fmt.Sprintf("%s/%s/%s", UploadDir, s.User, s.Id)
 	files, err := ioutil.ReadDir(path)

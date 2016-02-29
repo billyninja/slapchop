@@ -42,6 +42,7 @@ func InitServer(port string) chan os.Signal {
 	router.DELETE("/chopit/:username/:chopid", ac.Delete)
 	router.GET("/tiled/:username/:chopid", ac.Preview)
 	router.GET("/random/:username/:chopid", ac.Random)
+	router.GET("/pixelette/:username/:chopid", ac.Pixelette)
 
 	runtime.GOMAXPROCS(1)
 
